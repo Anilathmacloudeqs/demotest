@@ -3,23 +3,37 @@ $sourceBranch = "main"
 $destinationBranch = "release"
 $fileToCheck = "hello.py"
 
-# Check if the file exists in the source branch
-$doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
+# Check if the source branch exists
+$sourceBranchExists = git show-ref --verify --quiet "refs/heads/$sourceBranch"
 
-if ($doesFileExist) {
-    # Checkout the release branch
-    git checkout $destinationBranch
+if ($sourceBranchExists) {
+    # Check if the file exists in the source branch
+    $doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
 
-    # Merge the changes from the source branch
-    git merge $sourceBranch
+    if ($doesFileExist) {
+        # Check if the destination branch exists
+        $destinationBranchExists = git show-ref --verify --quiet "refs/heads/$destinationBranch"
 
-    # Push changes to the release branch
-    git push origin $destinationBranch
+        if ($destinationBranchExists) {
+            # Checkout the release branch
+            git checkout $destinationBranch
 
-    # Switch back to the original branch
-    git checkout $sourceBranch
+            # Merge the changes from the source branch
+            git merge $sourceBranch
 
-    Write-Host "Changes successfully pushed to $destinationBranch."
+            # Push changes to the release branch
+            git push origin $destinationBranch
+
+            # Switch back to the original branch
+            git checkout $sourceBranch
+
+            Write-Host "Changes successfully pushed to $destinationBranch."
+        } else {
+            Write-Host "Error: Destination branch $destinationBranch does not exist."
+        }
+    } else {
+        Write-Host "$fileToCheck does not exist in $sourceBranch branch."
+    }
 } else {
-    Write-Host "$fileToCheck does not exist in $sourceBranch branch."
+    Write-Host "Error: Source branch $sourceBranch does not exist."
 }
