@@ -34,9 +34,15 @@ jobs:
         run: git merge main
 
       - name: Push changes to release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr create --base release --head main --title "Merge main into release" --body "Automated PR from GitHub Actions" --draft
+        run: git push origin release
+
+      - name: Create pull request
+        run: |
+          TITLE="Merge main into release"
+          BODY="Automated PR from GitHub Actions"
+          SOURCE_BRANCH="main"
+          TARGET_BRANCH="release"
+          curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -d "{\"title\":\"$TITLE\",\"body\":\"$BODY\",\"head\":\"$SOURCE_BRANCH\",\"base\":\"$TARGET_BRANCH\"}" -H "Content-Type: application/json" "https://api.github.com/repos/${{ github.repository }}/pulls"
 
       - name: Switch back to main
         run: git checkout main
