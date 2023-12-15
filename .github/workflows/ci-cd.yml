@@ -1,0 +1,21 @@
+name: CI/CD Demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Copy file to release branch
+      run: |
+        git checkout -b release
+        git add path/to/your/file
+        git commit -m "Add file to release branch"
+        git push origin release
