@@ -34,6 +34,8 @@ jobs:
         run: git merge main
 
       - name: Push changes to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr create --base release --head main --title "Merge main into release" --body "Automated PR from GitHub Actions" --draft
 
       - name: Switch back to main
