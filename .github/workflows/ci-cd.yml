@@ -34,7 +34,11 @@ jobs:
         run: git merge main
 
       - name: Push changes to release
-        run: git push origin release
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          git remote set-url origin https://github.com/Anilathmacloudeqs/demotest
+          git push origin release
 
       - name: Switch back to main
         run: git checkout main
