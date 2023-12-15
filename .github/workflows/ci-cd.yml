@@ -34,11 +34,7 @@ jobs:
         run: git merge main
 
       - name: Push changes to release
-        env:
-          PAT: ${{ secrets.PAT }}
-        run: |
-          git remote set-url origin https://github.com/Anilathmacloudeqs/demotest
-          git push origin release
+        run: gh repo create --source-branch main --base-branch release --enable-actions --public
 
       - name: Switch back to main
         run: git checkout main
