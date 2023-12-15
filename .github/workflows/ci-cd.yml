@@ -16,6 +16,6 @@ jobs:
     - name: Copy file to release branch
       run: |
         git checkout -b release
-        git add path/to/your/file
+        git add hello.py
         git commit -m "Add file to release branch"
         git push origin release
