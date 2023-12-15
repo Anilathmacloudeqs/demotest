@@ -1,4 +1,4 @@
-name: CI/CD Demo
+name: Push to Release
 
 on:
   push:
@@ -6,16 +6,38 @@ on:
       - main
 
 jobs:
-  deploy:
+  push_to_release:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Copy file to release branch
-      run: |
-        git checkout -b release
-        git add hello.py
-        git commit -m "Add file to release branch"
-        git push origin release
+      - name: Check if hello.py exists
+        run: |
+          if [ -f hello.py ]; then
+            echo "File hello.py exists."
+          else
+            echo "Error: hello.py does not exist."
+            exit 1
+          fi
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Checkout release branch
+        run: git checkout -b release
+
+      - name: Merge changes from main
+        run: git merge main
+
+      - name: Push changes to release
+        run: git push origin release
+
+      - name: Switch back to main
+        run: git checkout main
+
+      - name: Complete
+        run: echo "Changes successfully pushed to release."
