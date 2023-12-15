@@ -13,12 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup PowerShell
-        uses: actions/setup-powershell@v2
-        with:
-          pwsh-version: '7.x'  # Specify the desired PowerShell version
-
       - name: Run PowerShell script
         run: |
           $ErrorActionPreference = 'Stop'
-          .push-to-release.ps1
+          pwsh -File push-to-release.ps1
