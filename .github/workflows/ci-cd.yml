@@ -1,4 +1,4 @@
-name: Push to Release
+name: Push to Release Branch
 
 on:
   push:
@@ -13,7 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up PowerShell
+        uses: PowerShell/setup-powershell@v1
+        with:
+          pwsh-version: '7.x'
+
       - name: Run PowerShell script
         run: |
-          $ErrorActionPreference = 'Stop'
-          pwsh -File push-to-release.ps1
+          ./path/to/your/script.ps1
+
+      - name: Push changes to Release Branch
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git push origin release
