@@ -1,23 +1,25 @@
-name: Push to Release
+# Define variables
+$sourceBranch = "main"
+$destinationBranch = "release"
+$fileToCheck = "hello.py"
 
-on:
-  push:
-    branches:
-      - main
+# Check if the file exists in the source branch
+$doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
 
-jobs:
-  push_to_release:
-    runs-on: ubuntu-latest
+if ($doesFileExist) {
+    # Checkout the release branch
+    git checkout $destinationBranch
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Merge the changes from the source branch
+    git merge $sourceBranch
 
-      - name: Add directory to PATH
-        run: |
-          echo "$PWD" >> $GITHUB_PATH
+    # Push changes to the release branch
+    git push origin $destinationBranch
 
-      - name: Run PowerShell script
-        run: |
-          $ErrorActionPreference = 'Stop'
-          pwsh -File push-to-release.ps1
+    # Switch back to the original branch
+    git checkout $sourceBranch
+
+    Write-Host "Changes successfully pushed to $destinationBranch."
+} else {
+    Write-Host "$fileToCheck does not exist in $sourceBranch branch."
+}
