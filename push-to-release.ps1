@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Add directory to PATH
+        run: |
+          echo "$PWD" >> $GITHUB_PATH
+
       - name: Run PowerShell script
         run: |
           $ErrorActionPreference = 'Stop'
