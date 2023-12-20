@@ -1,39 +1,19 @@
-# Define variables
-$sourceBranch = "main"
-$destinationBranch = "release"
-$fileToCheck = "hello.py"
+name: Push to Release
 
-# Check if the source branch exists
-$sourceBranchExists = git show-ref --verify --quiet "refs/heads/$sourceBranch"
+on:
+  push:
+    branches:
+      - main
 
-if ($sourceBranchExists) {
-    # Check if the file exists in the source branch
-    $doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
+jobs:
+  push_to_release:
+    runs-on: ubuntu-latest
 
-    if ($doesFileExist) {
-        # Check if the destination branch exists
-        $destinationBranchExists = git show-ref --verify --quiet "refs/heads/$destinationBranch"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        if ($destinationBranchExists) {
-            # Checkout the release branch
-            git checkout $destinationBranch
-
-            # Merge the changes from the source branch
-            git merge $sourceBranch
-
-            # Push changes to the release branch
-            git push origin $destinationBranch
-
-            # Switch back to the original branch
-            git checkout $sourceBranch
-
-            Write-Host "Changes successfully pushed to $destinationBranch."
-        } else {
-            Write-Host "Error: Destination branch $destinationBranch does not exist."
-        }
-    } else {
-        Write-Host "$fileToCheck does not exist in $sourceBranch branch."
-    }
-} else {
-    Write-Host "Error: Source branch $sourceBranch does not exist."
-}
+      - name: Run PowerShell script
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pwsh -File push-to-release.ps1
