@@ -1,4 +1,4 @@
-name: Run PowerShell Script
+name: Run PowerShell script
 
 on:
   push:
@@ -6,14 +6,13 @@ on:
       - main
 
 jobs:
-  run_powershell_script:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Run PowerShell script
-        run: |
-          $ErrorActionPreference = 'Stop'
-          Invoke-Expression -Command $(Get-Content ./testps1.ps1 | Out-String)
+    - name: Run PowerShell script
+      shell: pwsh
+      run: ./path/to/your/script/testps1.ps1
