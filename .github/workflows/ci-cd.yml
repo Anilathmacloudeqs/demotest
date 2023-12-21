@@ -1,4 +1,4 @@
-name: Push to Release
+name: Run Python Script
 
 on:
   push:
@@ -6,14 +6,18 @@ on:
       - main
 
 jobs:
-  push_to_release:
+  run_python_script:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run PowerShell script
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.x
+
+      - name: Run Python script
         run: |
-          $ErrorActionPreference = 'Stop'
-          ./push-to-release.ps1
+          python hello.py
