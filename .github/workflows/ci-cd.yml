@@ -1,4 +1,4 @@
-name: Run Python Script
+name: Run PowerShell script
 
 on:
   push:
@@ -6,18 +6,14 @@ on:
       - main
 
 jobs:
-  run_python_script:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v3
-        with:
-          python-version: 3.x
-
-      - name: Run Python script
-        run: |
-          python hello.py
+    - name: Run PowerShell script
+      shell: pwsh
+      run: |
+        pwsh -File ./testps1.ps1
