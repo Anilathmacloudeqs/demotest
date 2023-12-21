@@ -1,0 +1,19 @@
+name: Run PowerShell Script
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_powershell_script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run PowerShell script
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Invoke-Expression -Command $(Get-Content ./testps1.ps1 | Out-String)
