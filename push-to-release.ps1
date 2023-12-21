@@ -3,20 +3,24 @@ $sourceBranch = "main"
 $destinationBranch = "release"
 $fileToCheck = "hello.py"
 
-# Check if the file exists in the source branch
+Write-Host "Source Branch: $sourceBranch"
+Write-Host "Destination Branch: $destinationBranch"
+Write-Host "File to Check: $fileToCheck"
+
 $doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
+Write-Host "File Existence Check Result: $doesFileExist"
 
 if ($doesFileExist) {
-    # Checkout the release branch
+    Write-Host "Checking out $destinationBranch..."
     git checkout $destinationBranch
 
-    # Merge the changes from the source branch
+    Write-Host "Merging changes from $sourceBranch..."
     git merge $sourceBranch
 
-    # Push changes to the release branch
+    Write-Host "Pushing changes to $destinationBranch..."
     git push origin $destinationBranch
 
-    # Switch back to the original branch
+    Write-Host "Switching back to $sourceBranch..."
     git checkout $sourceBranch
 
     Write-Host "Changes successfully pushed to $destinationBranch."
