@@ -15,4 +15,5 @@ jobs:
 
     - name: Run PowerShell script
       shell: pwsh
-      run: ./path/to/your/script/testps1.ps1
+      run: |
+        pwsh -File ./path/to/your/script/testps1.ps1
