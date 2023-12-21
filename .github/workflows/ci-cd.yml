@@ -1,4 +1,4 @@
-name: Run PowerShell script
+name: Push to Release
 
 on:
   push:
@@ -6,24 +6,38 @@ on:
       - main
 
 jobs:
-  run-script:
+  push_to_release:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout repository
+    - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Set up PowerShell
-      uses: actions/setup-powershell@v2
-      with:
-        pwsh-version: '7.x'  # or the desired PowerShell version
-
-    - name: Run PowerShell script
-      shell: pwsh
-      env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    - name: Set up Git
       run: |
-        $env:GIT_ASKPASS = 'echo'
-        git config --global credential.helper 'store --file ~/.git-credentials'
-        echo "machine github.com login Anilathmacloudeqs password $env:PAT_TOKEN" > ~/.git-credentials
-        pwsh -File ./push-to-release.ps1
+        git config user.name "Anilathmacloudeqs"
+        git config user.email "anilathma@cloudeqs.com"
+
+    - name: Check File Existence
+      run: |
+        fileToCheck="hello.py"
+        if [ -e $fileToCheck ]; then
+          echo "File Existence Check Result: $(cat $fileToCheck)"
+        else
+          echo "File $fileToCheck not found."
+          exit 1
+        fi
+
+    - name: Create or Checkout Release Branch
+      run: |
+        destinationBranch="release"
+        git checkout $destinationBranch 2>/dev/null || git checkout -b $destinationBranch
+
+    - name: Merge Changes from Main
+      run: git merge main
+
+    - name: Push Changes to Release
+      run: git push origin $destinationBranch
+
+    - name: Switch Back to Main
+      run: git checkout main
