@@ -13,7 +13,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Set up PowerShell
+      uses: microsoft/setup-powershell@v7
+
     - name: Run PowerShell script
       shell: pwsh
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
+        $env:GIT_ASKPASS = 'echo'
+        git config --global credential.helper 'store --file ~/.git-credentials'
+        echo "machine github.com login Anilathmacloudeqs password $env:PAT_TOKEN" > ~/.git-credentials
         pwsh -File ./push-to-release.ps1
