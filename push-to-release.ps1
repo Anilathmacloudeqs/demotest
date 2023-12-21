@@ -10,8 +10,9 @@ Write-Host "File to Check: $fileToCheck"
 
 # Check if the file exists
 if (Test-Path $fileToCheck) {
-    Write-Host "File Existence Check Result: $($fileToCheck | Get-Content)"
-    
+    $fileContent = Get-Content $fileToCheck -Raw
+    Write-Host "File Existence Check Result: $fileContent"
+
     # Checkout or create the 'release' branch
     git checkout $destinationBranch 2>$null
     if ($?) {
