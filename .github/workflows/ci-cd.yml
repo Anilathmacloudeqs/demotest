@@ -16,4 +16,4 @@ jobs:
       - name: Run PowerShell script
         run: |
           $ErrorActionPreference = 'Stop'
-          Invoke-Expression -Command $(Get-Content ./push-to-release.ps1 | Out-String)
+          ./push-to-release.ps1
