@@ -1,4 +1,5 @@
-# Define variables
+# push-to-release.ps1
+
 $sourceBranch = "main"
 $destinationBranch = "release"
 $fileToCheck = "hello.py"
@@ -7,23 +8,30 @@ Write-Host "Source Branch: $sourceBranch"
 Write-Host "Destination Branch: $destinationBranch"
 Write-Host "File to Check: $fileToCheck"
 
-$doesFileExist = git show ${sourceBranch}:${fileToCheck} 2>$null
-Write-Host "File Existence Check Result: $doesFileExist"
+# Check if the file exists
+if (Test-Path $fileToCheck) {
+    Write-Host "File Existence Check Result: $($fileToCheck | Get-Content)"
+    
+    # Checkout or create the 'release' branch
+    git checkout $destinationBranch 2>$null
+    if ($?) {
+        Write-Host "Checking out $destinationBranch..."
+    } else {
+        Write-Host "Creating and checking out $destinationBranch..."
+        git checkout -b $destinationBranch
+    }
 
-if ($doesFileExist) {
-    Write-Host "Checking out $destinationBranch..."
-    git checkout $destinationBranch
-
-    Write-Host "Merging changes from $sourceBranch..."
+    # Merge changes from the 'main' branch
     git merge $sourceBranch
 
-    Write-Host "Pushing changes to $destinationBranch..."
+    # Push changes to 'release'
     git push origin $destinationBranch
 
-    Write-Host "Switching back to $sourceBranch..."
-    git checkout $sourceBranch
-
     Write-Host "Changes successfully pushed to $destinationBranch."
+
+    # Switch back to 'main'
+    git checkout $sourceBranch
+    Write-Host "Switching back to $sourceBranch..."
 } else {
-    Write-Host "$fileToCheck does not exist in $sourceBranch branch."
+    Write-Host "File $fileToCheck not found."
 }
