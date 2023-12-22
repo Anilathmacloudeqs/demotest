@@ -20,12 +20,15 @@ def push_file_to_branch(username, repository, source_branch, destination_branch,
 
         # Encode file content in base64
         encoded_content = base64.b64decode(source_file_content['content']).decode()
-
-        # Prepare payload for creating a new file in the destination branch
+        # Get the filename from the file path
+        file_name = os.path.basename(file_path)
+    
+        # Update payload to include the filename in the destination branch
         payload = {
             'message': commit_message,
             'content': base64.b64encode(encoded_content.encode()).decode(),
             'branch': destination_branch,
+            'path': file_name,  # Specify the filename in the destination branch
             'sha': source_commit_sha
         }
 
