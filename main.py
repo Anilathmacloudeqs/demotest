@@ -13,4 +13,4 @@ def list_files_in_repo(username, repository, branch, access_token):
         print(f"Error: Unable to fetch files. Status code: {response.status_code}")
 
 # Replace 'Anilathmacloudeqs', 'demotest', 'main', and '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' with your actual GitHub username, repository name, branch name, and access token
-list_files_in_repo('Anilathmacloudeqs', 'demotest', 'release', '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')
+list_files_in_repo('Anilathmacloudeqs', 'demotest', 'main', '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')
