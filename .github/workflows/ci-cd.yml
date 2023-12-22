@@ -1,43 +1,24 @@
-name: Push to Release
+name: Python CI
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
-  push_to_release:
+  build:
+
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout Code
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Git
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x  # replace with the version of Python you need
+
+    - name: Install dependencies
       run: |
-        git config user.name "Anilathmacloudeqs"
-        git config user.email "anilathma@cloudeqs.com"
+        python -m pip install --upgrade pip
 
-    - name: Check File Existence
-      run: |
-        fileToCheck="hello.py"
-        if [ -e $fileToCheck ]; then
-          echo "File Existence Check Result: $(cat $fileToCheck)"
-        else
-          echo "File $fileToCheck not found."
-          exit 1
-        fi
-
-    - name: Create or Checkout Release Branch
-      run: |
-        destinationBranch="release"
-        git checkout $destinationBranch 2>/dev/null || git checkout -b $destinationBranch
-
-    - name: Merge Changes from Main
-      run: git merge main
-
-    - name: Push Changes to Release
-      run: git push origin $destinationBranch
-
-    - name: Switch Back to Main
-      run: git checkout main
+    - name: Run main.py
+      run: python main.py
