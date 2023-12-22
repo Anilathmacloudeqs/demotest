@@ -21,14 +21,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    - name: Debug Information
-      run: |
-        echo "GitHub Token: $GITHUB_TOKEN"  # Assuming your token is stored as a GitHub Actions secret
-        echo "API URLs: $source_api_url, $destination_api_url"
-        echo "Branches: $source_branch, $destination_branch"
-        echo "File Path: $file_path"
-        echo "Commit Message: $commit_message"
-
     - name: Display installed packages
       run: |
         python -m pip freeze
