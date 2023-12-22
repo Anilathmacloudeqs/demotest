@@ -6,7 +6,6 @@ def push_file_to_branch(username, repository, source_branch, destination_branch,
     source_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={source_branch}'
     destination_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={destination_branch}'
 
-    # Retrieve the access token from the GitHub secret
     access_token = os.environ['PAT_TOKEN']
     headers = {'Authorization': f'token {access_token}'}
 
@@ -14,7 +13,6 @@ def push_file_to_branch(username, repository, source_branch, destination_branch,
     print(source_api_url)
 
     if source_file_response.status_code == 200:
-        # Get the current commit SHA of the source file
         source_file_content = source_file_response.json()
         source_commit_sha = source_file_content['sha']
 
@@ -37,7 +35,6 @@ def push_file_to_branch(username, repository, source_branch, destination_branch,
     else:
         print(f"Error: Unable to fetch source file. Status code: {source_file_response.status_code}")
 
-# Example usage
 push_file_to_branch(
     'Anilathmacloudeqs',
     'demotest',
