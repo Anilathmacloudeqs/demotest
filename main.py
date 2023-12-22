@@ -1,8 +1,9 @@
-import sys
 import requests
 import base64
 
-def push_file_to_branch(username, repository, source_branch, destination_branch, access_token, file_path, commit_message):
+
+def push_file_to_branch(username, repository, source_branch, destination_branch, access_token, file_path,
+                        commit_message):
     # API URLs for the source and destination branches
     source_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={source_branch}'
     destination_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={destination_branch}'
@@ -39,15 +40,7 @@ def push_file_to_branch(username, repository, source_branch, destination_branch,
     else:
         print(f"Error: Unable to fetch source file. Status code: {source_file_response.status_code}")
 
-if __name__ == "__main__":
-    # Get command line arguments
-    github_username = sys.argv[1]
-    repository_name = sys.argv[2]
-    source_branch = sys.argv[3]
-    destination_branch = sys.argv[4]
-    github_token = sys.argv[5]
-    file_path = sys.argv[6]
-    commit_message = sys.argv[7]
 
-    # Call the function with command line arguments
-    push_file_to_branch(github_username, repository_name, source_branch, destination_branch, github_token, file_path, commit_message)
+
+push_file_to_branch('Anilathmacloudeqs', 'demotest', 'main', 'release', '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',
+                    'hello.py', 'Commit message')
