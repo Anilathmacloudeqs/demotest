@@ -2,6 +2,7 @@ import requests
 import base64
 import os
 import sys
+print('stating')
 
 def push_file_to_branch(username, repository, source_branch, destination_branch, file_path, commit_message):
     source_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={source_branch}'
