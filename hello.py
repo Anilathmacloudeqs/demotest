@@ -1,1 +1,1 @@
-print("hello 10 evenig")
+print("hello 10 evening")
