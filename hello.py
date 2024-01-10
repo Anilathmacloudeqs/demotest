@@ -1,1 +1,1 @@
-print("hello latest on 10-01-2023")
+print("hello latest 10-01-2023")
