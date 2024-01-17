@@ -1,12 +1,11 @@
 print('stating')
 
-import requests
+
 print("request")
-import base64
 print("base64")
-import os
+
 print("os")
-import sys
+
 print("sys")
 
 print('starting function')
