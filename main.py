@@ -10,10 +10,12 @@ print("sys")
 
 print('starting function')
 def push_file_to_branch(username, repository, source_branch, destination_branch, file_path, commit_message):
+    print("function started")
     source_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={source_branch}'
     destination_api_url = f'https://api.github.com/repos/{username}/{repository}/contents/{file_path}?ref={destination_branch}'
 
-    access_token = os.environ.get('PAT_TOKEN')  # Use get to handle potential absence
+    access_token = os.environ.get('PAT_TOKEN') 
+    print("token set")
     if not access_token:
         print("Error: GitHub PAT_TOKEN not found in environment variables.", file=sys.stderr)
         return
