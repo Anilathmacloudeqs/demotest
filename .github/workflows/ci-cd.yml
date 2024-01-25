@@ -26,4 +26,4 @@ jobs:
     - name: Run Python script
       env:
         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-      run: python main.py
+      run: python hello22.py
