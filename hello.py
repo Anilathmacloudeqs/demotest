@@ -1,1 +1,1 @@
-Your new file content here
+print('hello')
