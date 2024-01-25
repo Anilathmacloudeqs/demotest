@@ -23,5 +23,6 @@ def get_files_in_branch(username, repository, branch, access_token):
 files_in_branch = get_files_in_branch(username, repository, branch, access_token)
 
 print(f"Files in the '{branch}' branch of '{username}/{repository}':")
-for file in files_in_branch:
-    print(file)
+print(f"Files in the '{branch}' branch of '{username}/{repository}':")
+print(', '.join(files_in_branch))
+
