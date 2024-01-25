@@ -12,18 +12,23 @@ def update_or_create_file(username, repository, branch, access_token, filename, 
     # Check if the file exists
     response = requests.get(url, params={"ref": branch}, headers=headers)
     if response.status_code == 200:
-        # File exists, get the current SHA
+        # File exists, get the current SHA and content
         current_sha = response.json()["sha"]
+        current_content = base64.b64decode(response.json()["content"]).decode()
 
-        # Update the existing file
-        data = {
-            "message": f"Update {filename}",
-            "content": base64.b64encode(content.encode()).decode(),
-            "sha": current_sha,
-            "branch": branch,
-        }
-        response = requests.put(url, headers=headers, json=data)
-        print(response.text)
+        # Check if the content is different
+        if current_content != content:
+            # Update the existing file
+            data = {
+                "message": f"Update {filename}",
+                "content": base64.b64encode(content.encode()).decode(),
+                "sha": current_sha,
+                "branch": branch,
+            }
+            response = requests.put(url, headers=headers, json=data)
+            print(response.text)
+        else:
+            print(f"The content of {filename} is already up to date.")
     else:
         # File does not exist, create a new file
         data = {
